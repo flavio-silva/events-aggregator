@@ -25,6 +25,10 @@ class User extends Model {
   checkPassword(password) {
     return bcrypt.compareSync(password, this.password_hash);
   }
+
+  static associate(models) {
+    this.hasMany(models.Subscription);
+  }
 }
 
 export default User;

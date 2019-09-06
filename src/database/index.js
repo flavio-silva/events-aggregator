@@ -1,8 +1,11 @@
 import Sequelize from 'sequelize';
 import dbConfig from '../config/database';
 import User from '../app/models/User';
+import File from '../app/models/File';
+import Meetup from '../app/models/Meetup';
+import Subscription from '../app/models/Subscription';
 
-const models = [User];
+const models = [User, File, Meetup, Subscription];
 
 class Database {
   constructor() {
@@ -12,6 +15,11 @@ class Database {
   init() {
     this.connection = new Sequelize(dbConfig);
     models.forEach(model => model.init(this.connection));
+    models.forEach(model => {
+      if (model.associate) {
+        model.associate(this.connection.models);
+      }
+    });
   }
 }
 
